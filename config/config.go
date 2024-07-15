@@ -13,9 +13,9 @@ type Config struct {
 
 func Load() *Config {
   return &Config{
-    Port:       getEnv("PORT", "8000")
-    Backends:   strings.Split(getEnv("BACKENDS", "http:/localhost:8080","http:/localhost:8081"), ",")
-    Algorithm:  getEnv("ALGORITHM", "round-robin")
+    Port:       getEnv("PORT", "8000"),
+    Backends:   strings.Split(getEnv("BACKENDS", "http:/localhost:8080,http:/localhost:8081"), ","),
+    Algorithm:  getEnv("ALGORITHM", "round-robin"),
   }
 }
 
