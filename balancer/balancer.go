@@ -9,7 +9,11 @@ func New(algorithm string, backends []*Backend) Balancer {
   case "round-robin":
     return &RoundRobin{Backends: backends}
   case "least-connections":
-    return &LeastConnections{Backends: backends}
+    leastConnectionsBackends := make([]*LeastConnectionsBackend, len(backends))
+    for i, backend := range backends {
+      leastConnectionsBackends[i] = NewLeastConnectionsBackend(backend)
+    }
+    return &LeastConnections{Backends: leastConnectionsBackends}
   default:
     return &RoundRobin{Backends: backends}
   }

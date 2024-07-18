@@ -4,6 +4,7 @@ import (
   "fmt"
   "log"
   "net/http"
+  "sync/atomic"
 
   "github.com/cdreetz/load-balancer-go/balancer"
   "github.com/cdreetz/load-balancer-go/config"

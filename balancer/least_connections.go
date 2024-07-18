@@ -5,7 +5,7 @@ import (
 )
 
 type LeastConnections struct {
-  Backends    []*Backend
+  Backends       []*LeastConnectionsBackend
   mutex          sync.Mutex
 }
 
@@ -13,8 +13,8 @@ func (l *LeastConnections) GetBackend() *Backend {
   l.mutex.Lock()
   defer l.mutex.Unlock()
 
-  var leastConnections int
-  var leastConnectionsBackend *Backend
+  var leastConnections int64
+  var leastConnectionsBackend *LeastConnectionsBackend
 
   for _, backend := range l.Backends {
     if backend.Alive {
@@ -26,8 +26,9 @@ func (l *LeastConnections) GetBackend() *Backend {
   }
 
   if leastConnectionsBackend != nil {
-    leastConnectionsBackend.Connections++
+    atomic.AddInt64(&leastConnectionsBackend.Connections, 1)
+    return leastConnectionsBackend.Backend
   }
 
-  return leastConnectionsBackend
+  return nil
 }
